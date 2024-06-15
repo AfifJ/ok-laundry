@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Transactions from '../components/Transactions.jsx'
+---
+
+<Layout title="Welcome to Astro.">
+	<div class="inline-flex flex-col items-center justify-start gap-7 bg-white px-8 py-6">
+		<div class="inline-flex w-80 items-center justify-between">
+			<div class="shrink grow basis-0 text-2xl font-bold text-black">Transaksi</div>
+			<a href="/account">
+				<div class="flex h-11 shrink grow basis-0 items-center justify-end gap-2">
+					<svg
+						width="46"
+						height="46"
+						viewBox="0 0 46 46"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M5.75 23C5.75 13.4731 13.4731 5.75 23 5.75V5.75C32.5269 5.75 40.25 13.4731 40.25 23V23C40.25 32.5269 32.5269 40.25 23 40.25V40.25C13.4731 40.25 5.75 32.5269 5.75 23V23Z"
+							fill="#7E869E"
+							fill-opacity="0.25"></path>
+						<circle cx="22.9999" cy="19.1667" r="7.66667" fill="#8D7373"></circle>
+						<path
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+							d="M35.0124 35.1223C35.0691 35.2195 35.0514 35.3425 34.9703 35.4206C31.8683 38.4109 27.6489 40.25 22.9999 40.25C18.3511 40.25 14.1317 38.411 11.0297 35.4208C10.9486 35.3427 10.931 35.2197 10.9876 35.1224C13.1867 31.3447 17.7398 28.75 23.0001 28.75C28.2602 28.75 32.8133 31.3447 35.0124 35.1223Z"
+							fill="#8D7373"></path>
+					</svg>
+				</div>
+			</a>
+		</div>
+    <Transactions client:load />
+	</div>
+</Layout>

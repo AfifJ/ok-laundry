@@ -1,0 +1,49 @@
+---
+import Layout from '../../../../layouts/Layout.astro'
+import ReportForm from '../../../../components/ReportForm.jsx'
+
+export async function getStaticPaths() {
+	const data = await fetch('http://localhost:3000/api/transactions').then((response) =>
+		response.json()
+	)
+
+	return data.map((post) => {
+		return {
+			params: { id: post.id, userId: post.id_user }
+		}
+	})
+}
+
+const { id, userId } = Astro.params
+---
+
+<Layout title="Lapor">
+	<div class="inline-flex flex-col items-center justify-start gap-16 bg-white">
+		<div class="flex flex-col items-center justify-start gap-6 self-stretch">
+			<div
+				class="border-black/opacity-40 inline-flex items-center justify-center self-stretch border-b px-4 py-6"
+			>
+				<div class="flex w-8 items-center justify-center py-2">
+					<a href="/">
+						<div class="flex h-8 w-8 items-center justify-center py-2">
+							<svg
+								width="32"
+								height="32"
+								viewBox="0 0 32 32"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path d="M20 8L12 16L20 24" stroke="#33363F" stroke-width="2.66667"></path>
+							</svg>
+						</div>
+					</a>
+				</div>
+				<div class="shrink grow basis-0 text-center text-2xl font-bold text-black">
+					Laporkan Kesalahan
+				</div>
+				<div class="flex w-8 items-center justify-center py-2 opacity-0"></div>
+			</div>
+			<ReportForm client:load id={id} />
+		</div>
+	</div>
+</Layout>

@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import RegisterAdminForm from '../../components/RegisterAdminForm'
+---
+
+<Layout title="Welcome to Astro.">
+	<div class="mx-auto flex w-96 flex-col items-center justify-start gap-11 bg-white px-10 py-14">
+		<div class="text-center   text-4xl font-bold text-black">Register</div>
+		<div class="text-center   text-base font-normal text-black opacity-70">
+			Selamat bergabung di Oke Laundry
+		</div>
+		<div class="flex flex-col items-start justify-start gap-9">
+			
+      <RegisterAdminForm client:load />
+
+			<div class="text-center   text-base font-normal text-black opacity-60 w-full">
+				Sudah punya akun?
+				<a href="/admin/login" class="text-center   text-base font-bold text-black underline"
+					>Login</a
+				>
+			</div>
+		</div>
+	</div>
+</Layout>
