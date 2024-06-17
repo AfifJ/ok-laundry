@@ -10,6 +10,7 @@ router.post('/get-detail', authController.getUserDetailByEmail)
 router.put('/update', authController.updateProfile)
 router.put('/update-password/:id', authController.updatePassword)
 
+router.get('/user/:email', authController.getUserIdByEmail)
 router.post('/admin/login', authController.loginAdmin)
 router.post('/admin/register', authController.registerAdmin)
 

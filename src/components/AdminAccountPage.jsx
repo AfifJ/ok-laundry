@@ -17,8 +17,9 @@ const AccountPage = () => {
 		localStorage.removeItem('authToken')
 		localStorage.removeItem('name')
 		localStorage.removeItem('email')
+		localStorage.removeItem('isAdmin')
 		localStorage.removeItem('id')
-		return (window.location.href = '/login')
+		return (window.location.href = '/admin/login')
 	}
 
 	const handleEditClick = () => {
@@ -57,7 +58,7 @@ const AccountPage = () => {
 	return (
 		<div className="inline-flex w-96 flex-col items-center justify-start gap-8 bg-white">
 			<div className="border-black/opacity-40 inline-flex items-center justify-center self-stretch border-b px-4 py-6">
-				<a href="/">
+				<a href="/admin">
 					<div className="flex   w-8 items-center justify-center py-2">
 						<svg
 							width="32"

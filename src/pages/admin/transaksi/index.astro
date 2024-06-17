@@ -1,0 +1,32 @@
+---
+import AllTransactions from '../../../components/AllTransactions'
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+---
+
+<AdminLayout title="Daftar Transaksi">
+	<main>
+		<div class="inline-flex   w-96 flex-col items-center justify-start gap-7 bg-white">
+			<div class="inline-flex w-80 items-center justify-between">
+				<div class="inline-flex w-80 items-center justify-between">
+					<a href="/admin">
+						<div class="flex   w-8 items-center justify-center py-2">
+							<svg
+								width="32"
+								height="32"
+								viewBox="0 0 32 32"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path d="M20 8L12 16L20 24" stroke="#33363F" stroke-width="2.66667"></path>
+							</svg>
+						</div>
+					</a>
+					<div class="shrink grow basis-0 text-2xl font-bold text-black">Transaksi</div>
+					<a class="font-bold text-xl text-green-600" href="/admin/transaksi/create"> Tambah </a>
+				</div>
+			</div>
+
+			<AllTransactions client:load />
+		</div>
+	</main>
+</AdminLayout>

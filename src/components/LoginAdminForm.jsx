@@ -18,11 +18,21 @@ const LoginAdminForm = () => {
 			})
 
 			if (response.ok) {
+				const data = await response.json()
+
 				console.log('Login berhasil')
-        alert('Login berhasil! Anda akan dialihkan ke halaman login dalam beberapa detik')
-        setTimeout(() => {
-          window.location.href = '/'; // Mengalihkan ke halaman utama
-        }, 1); 
+				alert('Login berhasil! Anda akan dialihkan ke halaman dashboard')
+
+				if (data) {
+					localStorage.setItem('isAdmin', 'true')
+					localStorage.setItem('name', data.name)
+					localStorage.setItem('id', data.id)
+					localStorage.setItem('authToken', data.token) 
+					localStorage.setItem('email', email)
+					window.location.href = '/admin'
+				} else {
+					console.log('token failed')
+				}
 			} else {
 				const { message } = await response.json()
 				setErrorMessage(message)
@@ -58,10 +68,10 @@ const LoginAdminForm = () => {
 					/>
 				</div>
 				<button type="submit">Login</button> */}
-				<div className="flex h-40 flex-col items-start justify-start gap-6">
+				<div className="flex flex-col items-start justify-start gap-6">
 					<label
 						htmlFor="email"
-						className="flex h-16 flex-col items-start justify-start gap-2 self-stretch"
+						className="flex flex-col items-start justify-start gap-2 self-stretch"
 					>
 						<div className="self-stretch text-base font-bold text-black">Email</div>
 						<div className="inline-flex items-center justify-start gap-2.5 self-stretch rounded-2xl border px-4 py-3">
@@ -80,7 +90,7 @@ const LoginAdminForm = () => {
 					</label>
 					<label
 						htmlFor="password"
-						className="flex h-16 flex-col items-start justify-start gap-2 self-stretch"
+						className="flex flex-col items-start justify-start gap-2 self-stretch"
 					>
 						<div className="self-stretch text-base font-bold text-black">Password</div>
 						<div className="inline-flex items-center justify-start gap-2.5 self-stretch rounded-2xl border px-4 py-3">

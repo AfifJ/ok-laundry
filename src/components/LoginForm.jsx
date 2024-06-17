@@ -68,15 +68,15 @@ const LoginForm = () => {
 
 	return (
 		<form onSubmit={handleLogin}>
-			<div className="inline-flex h-96 w-96 flex-col items-center justify-start gap-12 bg-white px-11 py-28">
+			<div className="inline-flex   w-96 flex-col items-center justify-start gap-12 bg-white px-11 py-28">
 				<div className="self-stretch text-center text-4xl font-bold text-black">Login</div>
 				<div className="self-stretch text-center text-base font-normal text-black opacity-70">
 					Selamat datang di Oke Laundry
 				</div>
-				<div className="flex h-40 flex-col items-start justify-start gap-6 self-stretch">
+				<div className="flex   flex-col items-start justify-start gap-6 self-stretch">
 					<label
 						htmlFor="email"
-						className="flex h-16 flex-col items-start justify-start gap-2 self-stretch"
+						className="flex   flex-col items-start justify-start gap-2 self-stretch"
 					>
 						<div className="self-stretch text-base font-bold text-black">Email</div>
 						<div className="inline-flex items-center justify-start gap-2.5 self-stretch rounded-2xl border px-4 py-3">
@@ -96,7 +96,7 @@ const LoginForm = () => {
 					</label>
 					<label
 						htmlFor="password"
-						className="flex h-16 flex-col items-start justify-start gap-2 self-stretch"
+						className="flex   flex-col items-start justify-start gap-2 self-stretch"
 					>
 						<div className="self-stretch text-base font-bold text-black">Password</div>
 						<div className="inline-flex items-center justify-start gap-2.5 self-stretch rounded-2xl border px-4 py-3">

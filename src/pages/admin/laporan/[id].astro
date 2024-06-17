@@ -1,28 +1,29 @@
 ---
-import Layout from '../../../../layouts/Layout.astro'
-import DetailTransaksi from '../../../../components/DetailTransaksi.jsx'
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import AdminReportDetail from '../../../components/AdminReportDetail.jsx'
 
-export async function getStaticPaths() {
-	const data = await fetch('http://localhost:3000/api/transactions').then((response) =>
+export const getStaticPaths = async () => {
+
+	const data = await fetch(`http://localhost:3000/api/transactions/report`).then((response) =>
 		response.json()
 	)
 
 	return data.map((post) => {
 		return {
-			params: { id: post.id, userId: post.id_user }
+			params: { id: post.id }
 		}
 	})
 }
 
-const { id, userId } = Astro.params
+const { id } = Astro.params
 ---
 
-<Layout title="Detail">
+<AdminLayout title="Detail">
 	<div class="inline-flex   w-96 flex-col items-center justify-start gap-8 bg-white">
 		<div
 			class="border-black/opacity-40 inline-flex items-center justify-center self-stretch border-b px-4 py-6"
 		>
-			<a href="/">
+			<a href="/admin/laporan">
 				<div class="flex   w-8 items-center justify-center py-2">
 					<svg
 						width="32"
@@ -38,6 +39,6 @@ const { id, userId } = Astro.params
 			<div class="shrink grow basis-0 text-center text-2xl font-bold text-black">Detail</div>
 			<div class="flex   w-8 items-center justify-center py-2 opacity-0"></div>
 		</div>
-		<DetailTransaksi {id} {userId} client:load />
+		<AdminReportDetail {id} client:load />
 	</div>
-</Layout>
+</AdminLayout>

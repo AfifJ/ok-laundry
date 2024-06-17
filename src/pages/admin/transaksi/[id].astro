@@ -1,6 +1,6 @@
 ---
-import Layout from '../../../layouts/Layout.astro'
-import DetailTransaksi from '../../../components/DetailTransaksi.jsx'
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import AdminReportDetail from '../../../components/AdminReportDetail.jsx'
 
 export const getStaticPaths = async () => {
 	const data = await fetch(`http://localhost:3000/api/transactions`).then((response) =>
@@ -17,13 +17,13 @@ export const getStaticPaths = async () => {
 const { id } = Astro.params
 ---
 
-<Layout title="Detail">
-	<div class="inline-flex h-96 w-96 flex-col items-center justify-start gap-8 bg-white">
+<AdminLayout title="Detail">
+	<div class="inline-flex w-96 flex-col items-center justify-start gap-8 bg-white">
 		<div
 			class="border-black/opacity-40 inline-flex items-center justify-center self-stretch border-b px-4 py-6"
 		>
 			<a href="/admin/transaksi">
-				<div class="flex h-8 w-8 items-center justify-center py-2">
+				<div class="flex w-8 items-center justify-center py-2">
 					<svg
 						width="32"
 						height="32"
@@ -36,8 +36,8 @@ const { id } = Astro.params
 				</div>
 			</a>
 			<div class="shrink grow basis-0 text-center text-2xl font-bold text-black">Detail</div>
-			<div class="flex h-8 w-8 items-center justify-center py-2 opacity-0"></div>
+			<div class="flex w-8 items-center justify-center py-2 opacity-0"></div>
 		</div>
-		<!-- <DetailTransaksi {id} use client:load /> -->
+		<AdminReportDetail id={id} />
 	</div>
-</Layout>
+</AdminLayout>

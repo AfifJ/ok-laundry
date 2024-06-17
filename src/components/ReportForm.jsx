@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const ReportForm = ({ id }) => {
+const ReportForm = ({ id, id_user }) => {
 	const [category, setCategory] = useState('')
 	const [description, setDescription] = useState('')
 	const [phoneNumber, setPhoneNumber] = useState('')
@@ -8,7 +8,6 @@ const ReportForm = ({ id }) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 
-		const id_user = localStorage.getItem('id')
 		try {
 			const response = await fetch(
 				`http://localhost:3000/api/transactions/${id_user}/${id}/report`,
@@ -35,12 +34,11 @@ const ReportForm = ({ id }) => {
 
 			console.log('berhasil dikirim')
 			alert('Laporan berhasil dikirim')
-			window.location.href = `/transaksi/${id}`
+			window.location.href = `/transaksi/${id_user}/${id}`
 		} catch (err) {
 			console.log('pesan error')
 			console.error(err)
 		}
-
 	}
 
 	return (

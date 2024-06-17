@@ -61,3 +61,12 @@ exports.updatePassword = async (hashedPassword, id) => {
 	return result.affectedRows > 0
 }
 
+exports.findUserIdByEmail = async (email) => {
+	const [users] = await pool.query('SELECT id FROM users WHERE email = ?', [email])
+
+	if (users.length === 0) {
+		return null
+	}
+
+	return users[0].id
+}

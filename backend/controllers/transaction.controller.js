@@ -52,16 +52,60 @@ exports.createReport = async (req, res) => {
 
 exports.updateTransactionStatus = async (req, res) => {
 	try {
-		const id_transaction = req.params.id
+		const id = req.params.id
 		const { status } = req.body
 
-		const result = await transactionModel.updateTransactionStatus(id_transaction, status)
+		const result = await transactionModel.updateTransactionStatus(id, status)
 
 		if (result === 0) {
 			return res.status(404).json({ message: 'Transaksi tidak ditemukan' })
 		}
 
 		res.json({ message: 'Status transaksi berhasil diupdate' })
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}
+
+exports.getAllReports = async (req, res) => {
+	try {
+		const reports = await transactionModel.getAllCustomerReports()
+		res.json(reports)
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}
+
+exports.getCustomerReportDetails = async (req, res) => {
+	try {
+		const reportId = req.params.id
+		const report = await transactionModel.getCustomerReportDetails(reportId)
+
+		if (!report) {
+			return res.status(404).json({ message: 'Laporan tidak ditemukan' })
+		}
+
+		res.json(report)
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}
+
+exports.updateReportStatus = async (req, res) => {
+	try {
+		const reportId = req.params.id
+		const { status } = req.body
+
+		const result = await transactionModel.updateCustomerReportStatus(reportId, status)
+
+		if (result === 0) {
+			return res.status(404).json({ message: 'Laporan tidak ditemukan' })
+		}
+
+		res.json({ message: 'Status laporan berhasil diupdate' })
 	} catch (err) {
 		console.error(err)
 		res.status(500).json({ message: 'Internal Server Error' })

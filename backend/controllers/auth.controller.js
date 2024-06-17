@@ -7,7 +7,7 @@ exports.login = async (req, res) => {
 	try {
 		const { email, password } = req.body
 
-		const user = await userModel.getUserByEmail(email)
+		const user = await userModel.getAdminByEmail(email)
 
 		if (!user) {
 			return res.status(401).json({ message: 'Email tidak ditemukan' })
@@ -63,12 +63,13 @@ exports.registerAdmin = async (req, res) => {
 }
 
 exports.loginAdmin = async (req, res) => {
+	const JWT_SECRET = process.env.JWT_SECRET || 'adminsecret'
 	try {
 		const { email, password } = req.body
 
 		const user = await userModel.getAdminByEmail(email)
 
-		if (!user || !user.is_admin) {
+		if (!user) {
 			return res.status(401).json({ message: 'Email tidak ditemukan' })
 		}
 
@@ -78,9 +79,19 @@ exports.loginAdmin = async (req, res) => {
 			return res.status(401).json({ message: 'Password salah' })
 		}
 
-		// Lakukan tindakan selanjutnya, seperti membuat token autentikasi
+		const token = jwt.sign(
+			{ userId: user.id },
+			JWT_SECRET,
+			{ expiresIn: '1h' } // Token akan kadaluarsa dalam 1 jam
+		)
 
-		res.json({ message: 'Login berhasil' })
+		res.json({
+			message: 'Login berhasil',
+			name: user.name,
+			email: user.email,
+			id: user.id,
+			token: token
+		})
 	} catch (err) {
 		console.error(err)
 		res.status(500).json({ message: 'Internal Server Error' })
@@ -117,16 +128,33 @@ exports.updateProfile = async (req, res) => {
 }
 
 exports.updatePassword = async (req, res) => {
-  const { password } = req.body;
-  const { id } = req.params;
+	const { password } = req.body
+	const { id } = req.params
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+	const hashedPassword = await bcrypt.hash(password, 10)
 
-  const result = await userModel.updatePassword(hashedPassword, id);
+	const result = await userModel.updatePassword(hashedPassword, id)
 
-  if (result) {
-    res.json({ message: 'Password updated successfully' });
-  } else {
-    res.status(400).json({ message: 'Failed to update password' });
-  }
-};
+	if (result) {
+		res.json({ message: 'Password updated successfully' })
+	} else {
+		res.status(400).json({ message: 'Failed to update password' })
+	}
+}
+
+exports.getUserIdByEmail = async (req, res) => {
+	try {
+		const { email } = req.params
+
+		const user = await userModel.getUserByEmail(email)
+
+		if (!user) {
+			return res.status(404).json({ message: 'Email not found' })
+		}
+
+		res.json({ userId: user.id })
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}

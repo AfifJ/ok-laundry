@@ -1,0 +1,17 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import CreateTransaction from '../../../components/CreateTransaction.jsx'
+---
+
+<AdminLayout>
+	<div class="inline-flex w-96 flex-col items-center justify-start bg-white">
+		<div
+			class="border-black/opacity-40 inline-flex items-center justify-center self-stretch border-b px-4 py-6"
+		>
+			<div class="flex  w-8 items-center justify-center py-2"></div>
+			<div class="shrink grow basis-0 text-center text-2xl font-bold text-black">Tambah</div>
+			<div class="flex  w-8 items-center justify-center py-2 opacity-0"></div>
+		</div>
+		<CreateTransaction client:load />
+	</div>
+</AdminLayout>

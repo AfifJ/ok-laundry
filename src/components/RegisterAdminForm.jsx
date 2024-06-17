@@ -29,7 +29,7 @@ const RegisterAdminForm = () => {
 				console.log('Registrasi berhasil')
         alert('Registrasi berhasil! Anda akan dialihkan ke halaman login dalam beberapa detik')
         setTimeout(() => {
-          window.location.href = '/'; // Mengalihkan ke halaman utama
+          window.location.href = '/admin/login'; // Mengalihkan ke halaman utama
         }, 1); 
 			} else {
 				const { message } = await response.json()

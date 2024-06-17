@@ -9,22 +9,32 @@ const AdminDetailTransaksi = ({ id }) => {
 		setModalOpen(true)
 	}
 
-	const handleCloseModal = () => {
-		setModalOpen(false)
-	}
-
 	const handleStatusChange = (newStatus) => {
 		setStatus(newStatus)
 		setModalOpen(false)
 		console.log(newStatus)
 		// TODO: Panggil fungsi untuk memperbarui status di database
+		fetch(`http://localhost:3000/api/transactions/status/${id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ status: newStatus })
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`)
+				}
+				return response.json()
+			})
+			.then((json) => {
+				console.log(json)
+			})
+			.catch((err) => console.error('Error:', err))
 	}
 
-	/*  */
-
 	useEffect(() => {
-		const userid = localStorage.getItem('id')
-		fetch(`http://localhost:3000/api/transactions/${userid}/${id}`)
+		fetch(`http://localhost:3000/api/admin/transactions/${id}`)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`)
@@ -42,7 +52,7 @@ const AdminDetailTransaksi = ({ id }) => {
 
 	return (
 		<>
-			<div className="flex h-20 flex-col items-start justify-start gap-3 self-stretch px-8">
+			<div className="flex flex-col items-start justify-start gap-3 self-stretch px-8">
 				<div className="inline-flex items-start justify-between self-stretch">
 					<div className="text-base font-normal text-black opacity-60">Tanggal</div>
 					<div className="text-base font-bold text-black">{data.date}</div>
@@ -92,21 +102,16 @@ const AdminDetailTransaksi = ({ id }) => {
 					</div>
 				</div>
 			</div>
-			<div className="flex h-44 flex-col items-start justify-start gap-5 self-stretch px-8">
+			<div className="flex flex-col items-start justify-start gap-5 self-stretch px-8">
 				<div className="self-stretch text-center text-base font-normal text-black opacity-60">
 					Pesanan yang tidak dilaporkan dalam 24 jam akan dianggap sesuai
 				</div>
-				<a className="w-full" href={`/transaksi/lapor/${id}`}>
+		{/* 		<a className="w-full" href={`/transaksi/lapor/${id}`}>
 					<div className="inline-flex w-full items-center justify-center gap-2.5 self-stretch rounded-2xl border border-pink-800 px-12 py-3">
 						<div className="text-xl font-bold text-pink-800">Laporkan Kesalahan</div>
 					</div>
 				</a>
-				{/* <button
-					onClick={handleDone}
-					className="inline-flex items-center justify-center gap-2.5 self-stretch rounded-2xl bg-green-500 px-12 py-3"
-				>
-					<div className="text-xl font-bold text-white">Update Status</div>
-				</button> */}
+				 */}
 				<button
 					onClick={handleOpenModal}
 					className="inline-flex items-center justify-center gap-2.5 self-stretch rounded-2xl bg-green-500 px-12 py-3"

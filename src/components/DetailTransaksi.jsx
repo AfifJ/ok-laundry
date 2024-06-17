@@ -19,7 +19,7 @@ const DetailTransaksi = ({ id, userId }) => {
 
 	return (
 		<>
-			<div className="flex h-20 flex-col items-start justify-start gap-3 self-stretch px-8">
+			<div className="flex   flex-col items-start justify-start gap-3 self-stretch px-8">
 				<div className="inline-flex items-start justify-between self-stretch">
 					<div className="text-base font-normal text-black opacity-60">Tanggal</div>
 					<div className="text-base font-bold text-black">{data.date}</div>
@@ -69,7 +69,7 @@ const DetailTransaksi = ({ id, userId }) => {
 					</div>
 				</div>
 			</div>
-			<div className="flex h-44 flex-col items-start justify-start gap-5 self-stretch px-8">
+			<div className="flex   flex-col items-start justify-start gap-5 self-stretch px-8">
 				<div className="self-stretch text-center text-base font-normal text-black opacity-60">
 					Pesanan yang tidak dilaporkan dalam 24 jam akan dianggap sesuai
 				</div>

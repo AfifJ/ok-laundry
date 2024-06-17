@@ -31,7 +31,7 @@ exports.getTransactionDetails = async (userId, transactionId) => {
       mr.income,
       mr.date AS report_date
     FROM transactions t
-    JOIN users u ON t.id_user = u.id
+LEFT JOIN users u ON t.id_user = u.id
     JOIN monthly_reports mr ON t.id_monthly_report = mr.id
     WHERE t.id = ? AND t.id_user = ?`,
 		[transactionId, userId]
@@ -77,6 +77,7 @@ exports.getAllTransactions = async () => {
         ' ',
         YEAR(t.date)
     ) AS date,
+    t.date as date_row,
     t.id_user as id_user,
     t.total_price,
     t.status,
@@ -87,7 +88,7 @@ exports.getAllTransactions = async () => {
     ) AS title
 FROM
     transactions t
-    JOIN users u ON t.id_user = u.id
+    LEFT JOIN users u ON t.id_user = u.id
     JOIN clothes c ON t.id = c.id_transaction
 GROUP BY
     t.id
@@ -136,6 +137,7 @@ WHERE
     u.id = ?
 GROUP BY
     t.id
+ORDER BY t.date DESC
     `,
 		[userId]
 	)
@@ -172,3 +174,101 @@ exports.updateTransactionStatus = async (id_transaction, status) => {
 
 	return result.affectedRows
 }
+
+exports.createTransaction = async (body) => {
+	const { userId, clothes, status, totalPrice } = body
+	const currentDate = new Date()
+
+	const [monthlyReports] = await pool.query(
+		'SELECT id FROM monthly_reports WHERE MONTH(date) = ? AND YEAR(date) = ?',
+		[currentDate.getMonth() + 1, currentDate.getFullYear()]
+	)
+
+	let monthlyReportId
+	if (monthlyReports.length === 0) {
+		const [newMonthlyReport] = await pool.query(
+			'INSERT INTO monthly_reports (income, date) VALUES (0, ?)',
+			[currentDate]
+		)
+		monthlyReportId = newMonthlyReport.insertId
+	} else {
+		monthlyReportId = monthlyReports[0].id
+	}
+
+	const [newTransaction] = await pool.query(
+		'INSERT INTO transactions (id_user, id_monthly_report, date, total_price, status) VALUES (?, ?, ?, ?, ?)',
+		[userId, monthlyReportId, currentDate, totalPrice, status]
+	)
+
+	const transactionId = newTransaction.insertId
+
+	// Menambahkan pakaian ke transaksi
+	for (const cloth of clothes) {
+        await pool.query(
+            'INSERT INTO clothes (id_transaction, type, qty, price, total) VALUES (?, ?, ?, ?, ?)',
+            [transactionId, cloth.type, cloth.quantity, cloth.price, cloth.quantity * cloth.price]
+        )
+	}
+
+	// Memperbarui total pendapatan di laporan bulanan
+	await pool.query('UPDATE monthly_reports SET income = income + ? WHERE id = ?', [
+		totalPrice,
+		monthlyReportId
+	])
+}
+exports.updateTransactionStatus = async (transactionId, status) => {
+  const [result] = await pool.query(
+    `UPDATE transactions 
+    SET status = ? 
+    WHERE id = ?`,
+    [status, transactionId]
+  );
+
+  return result.affectedRows;
+};
+
+exports.getAllCustomerReports = async () => {
+  const [reports] = await pool.query(
+    `SELECT * FROM customer_reports`
+  );
+
+  return reports;
+}
+
+
+exports.getCustomerReportDetails = async (reportId) => {
+  const [reports] = await pool.query(
+    `SELECT
+      cr.id,
+      cr.title,
+      cr.desc,
+      cr.status,
+      cr.phone_number,
+      u.name AS user_name
+    FROM
+      customer_reports cr
+      JOIN users u ON cr.id_user = u.id
+    WHERE
+      cr.id = ?`,
+    [reportId]
+  );
+
+  if (reports.length === 0) {
+    return null;
+  }
+
+  const report = reports[0];
+
+  return report;
+}
+
+exports.updateCustomerReportStatus = async (reportId, status) => {
+  const [result] = await pool.query(
+    `UPDATE customer_reports 
+    SET status = ? 
+    WHERE id = ?`,
+    [status, reportId]
+  );
+
+  return result.affectedRows;
+};
