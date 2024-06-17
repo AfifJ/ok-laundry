@@ -7,7 +7,7 @@ exports.login = async (req, res) => {
 	try {
 		const { email, password } = req.body
 
-		const user = await userModel.getAdminByEmail(email)
+		const user = await userModel.getUserByEmail(email)
 
 		if (!user) {
 			return res.status(401).json({ message: 'Email tidak ditemukan' })
@@ -96,6 +96,101 @@ exports.loginAdmin = async (req, res) => {
 		console.error(err)
 		res.status(500).json({ message: 'Internal Server Error' })
 	}
+}
+
+exports.updateAdmin = async (req, res) => {
+	try {
+		const id = req.params.id
+		const { name, email } = req.body
+
+		const success = await userModel.updateAdmin(name, email, id)
+
+		if (success) {
+			res.status(200).json({ message: 'Admin updated successfully.' })
+		} else {
+			res.status(400).json({ message: 'Failed to update admin.' })
+		}
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}
+
+exports.getAllAdmins = async (req, res) => {
+  try {
+    const admins = await userModel.getAllAdmins();
+    res.json(admins);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
+exports.loginManager = async (req, res) => {
+	const JWT_SECRET = process.env.JWT_SECRET || 'managersecret'
+	try {
+		const { email, password } = req.body
+
+		const user = await userModel.getManagerByEmail(email)
+
+		if (!user) {
+			return res.status(401).json({ message: 'Email tidak ditemukan' })
+		}
+
+		const isPasswordValid = await bcrypt.compare(password, user.password)
+
+		if (!isPasswordValid) {
+			return res.status(401).json({ message: 'Password salah' })
+		}
+
+		const token = jwt.sign(
+			{ userId: user.id },
+			JWT_SECRET,
+			{ expiresIn: '1h' } // Token akan kadaluarsa dalam 1 jam
+		)
+
+		res.json({
+			message: 'Login berhasil',
+			name: user.name,
+			email: user.email,
+			id: user.id,
+			token: token
+		})
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}
+
+exports.registerManager = async (req, res) => {
+	try {
+		const { name, email, password } = req.body
+
+		const newUserId = await userModel.createManager({ name, email, password })
+
+		res.status(201).json({ id: newUserId })
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}
+
+exports.updateManager = async (req, res) => {
+  try {
+    const id = req.params.id
+    const { name, email } = req.body
+
+    const success = await userModel.updateManager(name, email, id)
+
+    if (success) {
+      res.status(200).json({ message: 'Manager updated successfully.' })
+    } else {
+      res.status(400).json({ message: 'Failed to update manager.' })
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
 }
 
 exports.getUserDetailByEmail = async (req, res) => {

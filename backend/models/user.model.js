@@ -19,9 +19,42 @@ exports.createUser = async (user) => {
 	return result.insertId
 }
 
+exports.getAllAdmins = async () => {
+  const [rows] = await pool.query('SELECT * FROM admins')
+  return rows
+}
+
 exports.getAdminByEmail = async (email) => {
-	const [rows] = await pool.query('SELECT * FROM admins WHERE email = ?', [email])
+	const [rows] = await pool.query(`SELECT * FROM admins WHERE email = ?`, [email])
 	return rows[0]
+}
+
+exports.getManagerByEmail = async (email) => {
+  const [rows] = await pool.query(`SELECT * FROM managers WHERE email = ?`, [email])
+  return rows[0]
+}
+
+exports.createManager = async (user) => {
+  const { name, email, password } = user
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  const [result] = await pool.query('INSERT INTO managers (name, email, password) VALUES (?, ?, ?)', [
+    name,
+    email,
+    hashedPassword
+  ])
+
+  return result.insertId
+}
+
+exports.updateManager = async (name, email, id) => {
+  const [result] = await pool.query('UPDATE managers SET name = ?, email = ? WHERE id = ?', [
+    name,
+    email,
+    id
+  ])
+
+  return result.affectedRows > 0
 }
 
 exports.createAdmin = async (user) => {
@@ -35,6 +68,16 @@ exports.createAdmin = async (user) => {
 	])
 
 	return result.insertId
+}
+
+exports.updateAdmin = async (name, email, id) => {
+  const [result] = await pool.query('UPDATE admins SET name = ?, email = ? WHERE id = ?', [
+    name,
+    email,
+    id
+  ])
+
+  return result.affectedRows > 0
 }
 
 exports.updateUser = async (name, email, id) => {

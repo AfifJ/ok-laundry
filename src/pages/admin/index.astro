@@ -1,18 +1,19 @@
 ---
 import AdminLayout from '../../layouts/AdminLayout.astro'
+import PilihanMenuAdmin from '../../components/PilihanMenuAdmin.jsx'
 ---
 
 <AdminLayout title="Dashboard">
-	<div class="inline-flex   w-96 flex-col items-center justify-start gap-6 bg-white px-8 py-4">
-		<div class="inline-flex items-center justify-between self-stretch">
-			<div class="shrink grow basis-0 text-2xl font-bold text-black">Dashboard</div>
-			<div class="flex   shrink grow basis-0 items-center justify-end gap-2">
-				<a href="/admin/account" class="relative   w-11">
-					<svg
-						width="46"
-						height="46"
-						viewBox="0 0 46 46"
-						fill="none"
+  <div class="inline-flex   w-96 flex-col items-center justify-start gap-6 bg-white px-8 py-4">
+    <div class="inline-flex items-center justify-between self-stretch">
+      <div class="shrink grow basis-0 text-2xl font-bold text-black">Dashboard</div>
+      <div class="flex   shrink grow basis-0 items-center justify-end gap-2">
+        <a href="/admin/account" class="relative   w-11">
+          <svg
+            width="46"
+            height="46"
+            viewBox="0 0 46 46"
+            fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
 						<path
@@ -29,17 +30,9 @@ import AdminLayout from '../../layouts/AdminLayout.astro'
 				</a>
 			</div>
 		</div>
-		<a
-			href="/admin/transaksi"
-			class="inline-flex items-center justify-center gap-2.5 self-stretch rounded-xl bg-green-500 px-32 py-11"
-		>
-			<div class="text-xl font-bold text-white">Transaksi</div>
-		</a>
-		<a
-			href="/admin/laporan"
-			class="inline-flex items-center justify-center gap-2.5 self-stretch rounded-xl bg-green-500 px-32 py-11"
-		>
-			<div class="text-xl font-bold text-white">Laporan Pelanggan</div>
-		</a>
+		<PilihanMenuAdmin client:load />
+
 	</div>
+
+
 </AdminLayout>

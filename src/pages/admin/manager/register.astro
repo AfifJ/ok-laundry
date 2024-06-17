@@ -1,0 +1,19 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import ManagerRegister from '../../../components/ManagerRegister.jsx'
+---
+<AdminLayout>
+  <div class="inline-flex w-full flex-col items-center justify-start gap-12 bg-white px-11 py-28">
+		<div class="text-4xl font-bold text-black">Manager Register</div>
+		<div class="text-base font-normal text-black opacity-70">Selamat datang di Oke Laundry</div>
+    
+    <ManagerRegister client:load />
+
+		<div class="text-center text-base font-normal text-black opacity-60">
+			Belum punya akun?
+			<a href="/admin/manager/register" class="text-center text-base font-bold text-black underline">
+				Register
+			</a>
+		</div>
+	</div>
+</AdminLayout>

@@ -18,8 +18,9 @@ const AccountPage = () => {
 		localStorage.removeItem('name')
 		localStorage.removeItem('email')
 		localStorage.removeItem('isAdmin')
+		localStorage.removeItem('isManager')
 		localStorage.removeItem('id')
-		return (window.location.href = '/admin/login')
+		return (window.location.href = '/admin/')
 	}
 
 	const handleEditClick = () => {
@@ -30,12 +31,20 @@ const AccountPage = () => {
 		event.preventDefault()
 		setIsEditing(false)
 
-		const response = await fetch('http://localhost:3000/api/auth/update', {
+		const id = localStorage.getItem('id')
+		const isManager = localStorage.getItem('isManager')
+
+		const url =
+			isManager === true
+				? `http://localhost:3000/api/auth/manager/update/${id}`
+				: `http://localhost:3000/api/auth/admin/update/${id}`
+
+		const response = await fetch(url, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ name, email, id: localStorage.getItem('id') })
+			body: JSON.stringify({ name, email })
 		})
 
 		if (response.ok) {
@@ -59,7 +68,7 @@ const AccountPage = () => {
 		<div className="inline-flex w-96 flex-col items-center justify-start gap-8 bg-white">
 			<div className="border-black/opacity-40 inline-flex items-center justify-center self-stretch border-b px-4 py-6">
 				<a href="/admin">
-					<div className="flex   w-8 items-center justify-center py-2">
+					<div className="flex w-8 items-center justify-center py-2">
 						<svg
 							width="32"
 							height="32"
@@ -72,7 +81,7 @@ const AccountPage = () => {
 					</div>
 				</a>
 				<div className="shrink grow basis-0 text-center text-2xl font-bold text-black">Akun</div>
-				<div className="flex   w-8 items-center justify-center py-2 opacity-0"></div>
+				<div className="flex w-8 items-center justify-center py-2 opacity-0"></div>
 			</div>
 
 			<div className="flex flex-col items-center justify-center gap-12 self-stretch px-8">
@@ -100,7 +109,7 @@ const AccountPage = () => {
 						<div className="self-stretch text-base font-bold text-black">Email</div>
 						{isEditing ? (
 							<input
-								type="text"
+								type="email"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 								className="border-black/opacity-20 inline-flex items-center justify-start gap-2.5 self-stretch rounded-2xl border px-4 py-3"
@@ -126,7 +135,7 @@ const AccountPage = () => {
 							</button>
 							<button
 								onClick={handleUpdateClick}
-								className="inline-flex   items-center justify-center gap-2.5 self-stretch rounded-2xl bg-green-500 px-12 py-3"
+								className="inline-flex items-center justify-center gap-2.5 self-stretch rounded-2xl bg-green-500 px-12 py-3"
 							>
 								<div className="text-xl font-bold text-white">Update Profil</div>
 							</button>
@@ -139,11 +148,11 @@ const AccountPage = () => {
 							>
 								<div className="text-base font-normal text-black">Edit Akun</div>
 							</button>
-							<a className="w-full" href="/account/update-pass">
-								<div className="border-black/opacity-20 inline-flex items-center w-full justify-center gap-2.5 self-stretch rounded-2xl border px-12 py-3">
+							{/* <a className="w-full" href="/account/update-pass">
+								<div className="border-black/opacity-20 inline-flex w-full items-center justify-center gap-2.5 self-stretch rounded-2xl border px-12 py-3">
 									<div className="text-base font-normal text-black">Ganti Password</div>
 								</div>
-							</a>
+							</a> */}
 							<button
 								onClick={handleLogout}
 								className="inline-flex items-center justify-center gap-2.5 self-stretch rounded-2xl bg-red-800 px-12 py-3"

@@ -21,7 +21,7 @@ const { title } = Astro.props
 			const isAdmin = localStorage.getItem('isAdmin')
 
 			const authToken = localStorage.getItem('authToken')
-			const restrictedPages = ['/admin/login', '/admin/register']
+			const restrictedPages = ['/admin/login', '/admin/register', '/admin/manager']
 			const currentPage = window.location.pathname
 
 			if (!isAdmin && authToken) {

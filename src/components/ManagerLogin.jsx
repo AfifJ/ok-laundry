@@ -9,7 +9,7 @@ const LoginAdminForm = () => {
 		e.preventDefault()
 
 		try {
-			const response = await fetch('http://localhost:3000/api/auth/admin/login', {
+			const response = await fetch('http://localhost:3000/api/auth/manager/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -23,11 +23,13 @@ const LoginAdminForm = () => {
 				console.log('Login berhasil')
 				alert('Login berhasil! Anda akan dialihkan ke halaman dashboard')
 
+        
 				if (data) {
 					localStorage.setItem('isAdmin', 'true')
+					localStorage.setItem('isManager', true)
 					localStorage.setItem('name', data.name)
 					localStorage.setItem('id', data.id)
-					localStorage.setItem('authToken', data.token) 
+					localStorage.setItem('authToken', data.token)
 					localStorage.setItem('email', email)
 					window.location.href = '/admin'
 				} else {
@@ -47,27 +49,6 @@ const LoginAdminForm = () => {
 		<div>
 			<h2>Login</h2>
 			<form onSubmit={handleLogin}>
-				{/* <div>
-					<label htmlhtmlFor="email">Email</label>
-					<input
-						type="email"
-						id="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
-				</div>
-				<div>
-					<label htmlhtmlFor="password">Password</label>
-					<input
-						type="password"
-						id="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-					/>
-				</div>
-				<button type="submit">Login</button> */}
 				<div className="flex flex-col items-start justify-start gap-6">
 					<label
 						htmlFor="email"

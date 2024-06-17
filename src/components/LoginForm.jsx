@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const LoginForm = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [errorMessage, setErrorMessage] = useState('asdf')
+	const [errorMessage, setErrorMessage] = useState('')
 
 	const fetchUser = async (email) => {
 		try {
