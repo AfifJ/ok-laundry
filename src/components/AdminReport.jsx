@@ -10,7 +10,7 @@ const AdminReport = () => {
 			try {
 				const response = await fetch('http://localhost:3000/api/transactions/report')
 				const data = await response.json()
-				setListLaporan(data)
+        setListLaporan(data.sort((a, b) => b.id - a.id))
 			} catch (error) {
 				console.log(error)
 			}

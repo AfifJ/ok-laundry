@@ -10,23 +10,21 @@ const AdminReportDetail = ({ id }) => {
 			.catch((error) => console.error('Error:', error))
 	}, [])
 
-	const handleComplete = () => {
-		fetch(`http://localhost:3000/api/transactions/report/${id}/status`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ status: 'Selesai' })
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				console.log('Success:', data)
-				setReport((prevState) => ({ ...prevState, status: 'Selesai' }))
+	const handleComplete = async () => {
+		try {
+			const response = await fetch(`http://localhost:3000/api/transactions/report/${id}/status`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ status: 'Selesai' })
 			})
-			.catch((error) => {
-				console.error('Error:', error)
-			})
-
+			const data = await response.json()
+			console.log('Success:', data)
+			setReport((prevState) => ({ ...prevState, status: 'Selesai' }))
+		} catch (error) {
+			console.error('Error:', error)
+		}
 		window.location.href = '/admin/laporan'
 	}
 

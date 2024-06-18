@@ -111,3 +111,15 @@ exports.updateReportStatus = async (req, res) => {
 		res.status(500).json({ message: 'Internal Server Error' })
 	}
 }
+
+exports.createTransaction = async (req, res) => {
+  const transaction = req.body;
+
+  try {
+    const data = await transactionModel.createTransaction(transaction);
+    res.status(201).json({ message: 'Transaction created'});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}

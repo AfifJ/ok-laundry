@@ -1,3 +1,5 @@
+const transactionModel = require('../models/admin.transaction.model')
+
 exports.getAllTransactions = async (req, res) => {
 	try {
 		const transactions = await transactionModel.getAllTransactions()
@@ -20,6 +22,22 @@ exports.updateTransactionStatus = async (req, res) => {
 		}
 
 		res.json({ message: 'Status transaksi berhasil diupdate' })
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+}
+
+exports.getTransactionDetails = async (req, res) => {
+	try {
+		const transactionId = req.params.id
+		const transaction = await transactionModel.getTransactionDetails(transactionId)
+
+		if (!transaction) {
+			return res.status(404).json({ message: 'Transaksi tidak ditemukan' })
+		}
+
+		res.json(transaction)
 	} catch (err) {
 		console.error(err)
 		res.status(500).json({ message: 'Internal Server Error' })

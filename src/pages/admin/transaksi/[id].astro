@@ -1,6 +1,6 @@
 ---
 import AdminLayout from '../../../layouts/AdminLayout.astro'
-import AdminReportDetail from '../../../components/AdminReportDetail.jsx'
+import AdminDetailTransaksi from '../../../components/AdminDetailTransaksi.jsx'
 
 export const getStaticPaths = async () => {
 	const data = await fetch(`http://localhost:3000/api/transactions`).then((response) =>
@@ -9,7 +9,7 @@ export const getStaticPaths = async () => {
 
 	return data.map((post) => {
 		return {
-			params: { id: post.id }
+			params: { id: post.id.toString() }
 		}
 	})
 }
@@ -38,6 +38,6 @@ const { id } = Astro.params
 			<div class="shrink grow basis-0 text-center text-2xl font-bold text-black">Detail</div>
 			<div class="flex w-8 items-center justify-center py-2 opacity-0"></div>
 		</div>
-		<AdminReportDetail id={id} />
+		<AdminDetailTransaksi id={id} client:load />
 	</div>
 </AdminLayout>

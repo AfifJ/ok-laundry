@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const CreateTransaction = () => {
 	const [email, setEmail] = useState('')
@@ -36,26 +36,25 @@ const CreateTransaction = () => {
 		setClothes(newClothes)
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault()
 
-		fetch(`http://localhost:3000/api/auth/user/${email}`)
-			.then((response) => response.json())
-			.then((data) => {
-				setUserId(data.userId)
-			})
-			.catch((error) => {
-				// Handle any errors that occur during the fetch request
-			})
+		try {
+			const response = await fetch(`http://localhost:3000/api/auth/user/${email}`)
+			const data = await response.json()
+			setUserId(data.userId)
 
-		const transactionData = {
-			userId,
-			clothes: clothes.filter((cloth) => cloth.type !== '' && cloth.quantity !== 0)
+			const transactionData = {
+				userId: data.userId,
+				email,
+				clothes: clothes.filter((cloth) => cloth.type !== '' && cloth.quantity !== 0)
+			}
+
+			localStorage.setItem('transactionData', JSON.stringify(transactionData))
+			window.location.href = '/admin/transaksi/detail'
+		} catch (error) {
+			// handle error
 		}
-
-		// Simpan data ke sessionStorage
-		localStorage.setItem('transactionData', JSON.stringify(transactionData))
-		window.location.href = '/admin/transaksi/detail'
 	}
 
 	return (

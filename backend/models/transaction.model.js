@@ -168,7 +168,7 @@ exports.updateTransactionStatus = async (id_transaction, status) => {
 	const [result] = await pool.query(
 		`UPDATE transactions 
     SET status = ? 
-    WHERE id_transaction = ?`,
+    WHERE id = ?`,
 		[status, id_transaction]
 	)
 

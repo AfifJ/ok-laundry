@@ -4,5 +4,26 @@ import CreateTransactionDetail from '../../../components/CreateTransactionDetail
 ---
 
 <AdminLayout>
+	<div class="inline-flex h-auto w-96 flex-col items-center justify-start bg-white">
+		<div
+			class="border-black/opacity-40 inline-flex items-center justify-center self-stretch border-b px-4 py-6"
+		>
+			<a href="/admin/transaksi/create">
+				<div class="flex w-8 items-center justify-center py-2">
+					<svg
+						width="32"
+						height="32"
+						viewBox="0 0 32 32"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path d="M20 8L12 16L20 24" stroke="#33363F" stroke-width="2.66667"></path>
+					</svg>
+				</div>
+			</a>
+			<div class="shrink grow basis-0 text-center text-2xl font-bold text-black">Detail</div>
+			<div class="flex w-8 items-center justify-center py-2 opacity-0"></div>
+		</div>
+	</div>
 	<CreateTransactionDetail client:load />
 </AdminLayout>

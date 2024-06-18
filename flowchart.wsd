@@ -1,0 +1,47 @@
+@startuml
+
+|Pelanggan|
+start
+:Datang ke laundry\n membawa cucian;
+
+|Staf Laundry|
+:Menerima cucian;
+:Mencatat detil order;
+:Input data ke sistem;
+
+|Sistem|
+:Membuat nota digital;
+
+|Staf Laundry|
+:Memberikan nota kepada pelanggan;
+
+:Memproses cucian;
+note left
+- Cuci
+- Keringkan
+- Setrika
+- Update status
+end note
+
+:Update status\n"Siap Diambil";
+
+|Pelanggan|
+:Datang untuk mengambil cucian\n dengan membawa nota;
+
+|Staf Laundry|
+if (Pembayaran belum dilakukan) then (ya)
+:Memverifikasi nomor order di sistem;
+:Mengambilkan cucian;
+:Menerima pembayaran;
+:Mencatat pembayaran di sistem\nsebagai "Selesai";
+else (tidak)
+:Memverifikasi nomor order di sistem;
+:Mengambilkan cucian;
+endif
+
+|Pemilik/Manajer|
+:Mengakses sistem untuk melihat\n laporan bulanan \n(transaksi dan pendapatan);
+
+stop
+
+@enduml

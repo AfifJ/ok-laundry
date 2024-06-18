@@ -9,32 +9,31 @@ const AdminDetailTransaksi = ({ id }) => {
 		setModalOpen(true)
 	}
 
-	const handleStatusChange = (newStatus) => {
-		setStatus(newStatus)
-		setModalOpen(false)
-		console.log(newStatus)
-		// TODO: Panggil fungsi untuk memperbarui status di database
-		fetch(`http://localhost:3000/api/transactions/status/${id}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ status: newStatus })
-		})
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`)
-				}
-				return response.json()
-			})
-			.then((json) => {
-				console.log(json)
-			})
-			.catch((err) => console.error('Error:', err))
-	}
+  const handleStatusChange = async (newStatus) => {
+    try {
+      setStatus(newStatus)
+      setModalOpen(false)
+      // console.log(newStatus)
+      // TODO: Panggil fungsi untuk memperbarui status di database
+      const response = await fetch(`http://localhost:3000/api/transactions/status/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const json = await response.json()
+      console.log(json)
+    } catch (err) {
+      console.error('Error:', err)
+    }
+  }
 
 	useEffect(() => {
-		fetch(`http://localhost:3000/api/admin/transactions/${id}`)
+		fetch(`http://localhost:3000/api/admin/transaction/${id}`)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`)
@@ -167,7 +166,7 @@ const AdminDetailTransaksi = ({ id }) => {
 											onClick={() => handleStatusChange('Selesai')}
 											className="w-full rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
 										>
-											Siap diambil
+											Selesai
 										</button>
 									</div>
 								</div>

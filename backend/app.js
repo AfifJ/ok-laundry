@@ -4,6 +4,7 @@ const authRoutes = require('./routes/auth.routes')
 const session = require('express-session')
 const transactionRoutes = require('./routes/transaction.routes')
 const reportRoutes = require('./routes/report.routes')
+const adminRoutes = require('./routes/admin.routes')
 
 const app = express()
 const port = 3000
@@ -25,6 +26,7 @@ app.use(
 app.use('/api/auth', authRoutes)
 app.use('/api/transactions', transactionRoutes)
 app.use('/api/report', reportRoutes)
+app.use('/api/admin', adminRoutes)
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`)
